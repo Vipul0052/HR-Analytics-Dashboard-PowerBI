@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Analytics Dashboard - Power BI Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .dashboard-preview {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .dashboard-img {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .dashboard-img:hover {
+            transform: scale(1.02);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h3 {
+            color: #3498db;
+            margin: 20px 0 10px 0;
+        }
+        
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .kpi-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .kpi-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .insight-list {
+            list-style: none;
+        }
+        
+        .insight-list li {
+            background: #ecf0f1;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tech-item {
+            background: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .cta-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>📊 HR Analytics Dashboard</h1>
+            <p>Interactive Power BI Dashboard for Employee Workforce Analysis & Attrition Insights</p>
+            <div class="badges">
+                <a href="#" class="badge">Power BI</a>
+                <a href="#" class="badge">Data Analytics</a>
+                <a href="#" class="badge">HR Analytics</a>
+                <a href="#" class="badge">Business Intelligence</a>
+            </div>
+        </div>
+
+        <!-- Dashboard Preview -->
+        <div class="dashboard-preview">
+            <h2 style="margin-bottom: 20px; color: #2c3e50;">📈 Live Dashboard Preview</h2>
+            <img src="./Images/Dashboard Screenshot.png" 
+                 alt="HR Analytics Dashboard" class="dashboard-img">
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Key Metrics -->
+            <div class="card">
+                <h2>🎯 Key Performance Indicators</h2>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">16.12%</div>
+                        <div class="kpi-label">Attrition Rate</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">1,470</div>
+                        <div class="kpi-label">Total Employees</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">$6.5K</div>
+                        <div class="kpi-label">Avg Salary</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">2.73/5</div>
+                        <div class="kpi-label">Job Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Problem -->
+            <div class="card">
+                <h2>🔍 Business Problem Solved</h2>
+                <p><strong>Challenge:</strong> High employee turnover rates and lack of visibility into workforce patterns were affecting company productivity and increasing recruitment costs.</p>
+                <br>
+                <p><strong>Solution:</strong> Created an interactive dashboard to identify attrition patterns, analyze employee satisfaction, and provide strategic recommendations for talent retention.</p>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <!-- Key Insights -->
+            <div class="card">
+                <h2>💡 Key Insights Discovered</h2>
+                <ul class="insight-list">
+                    <li><strong>Age Factor:</strong> Employees aged 26-35 show highest attrition (116 employees)</li>
+                    <li><strong>Education Impact:</strong> Bachelor's degree holders have 99 attritions</li>
+                    <li><strong>Salary Correlation:</strong> Lower salary bands (<$5K) correlate with higher turnover</li>
+                    <li><strong>Department Analysis:</strong> R&D department shows concerning attrition patterns</li>
+                    <li><strong>Job Satisfaction:</strong> 2.73/5 average score indicates improvement opportunities</li>
+                </ul>
+            </div>
+
+            <!-- Technical Stack -->
+            <div class="card">
+                <h2>🛠️ Technical Implementation</h2>
+                <h3>Tools & Technologies:</h3>
+                <div class="tech-list">
+                    <span class="tech-item">Power BI Desktop</span>
+                    <span class="tech-item">Power Query</span>
+                    <span class="tech-item">DAX</span>
+                    <span class="tech-item">Excel</span>
+                    <span class="tech-item">GitHub Pages</span>
+                </div>
+                
+                <h3>Skills Demonstrated:</h3>
+                <ul style="margin-top: 15px;">
+                    <li>📊 Data Analytics & Visualization</li>
+                    <li>🧠 Business Intelligence</li>
+                    <li>📈 Statistical Analysis</li>
+                    <li>💼 Storytelling with Data</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-section">
+            <h2 style="color: #2c3e50; margin-bottom: 20px;">🚀 Explore the Project</h2>
+            <p style="font-size: 1.1rem; color: #7f8c8d; margin-bottom: 20px;">
+                Dive into the complete analysis and discover how data-driven insights can transform HR decision-making
+            </p>
+            <div class="cta-buttons">
+                <a href="https://github.com/YOUR_USERNAME/HR-Analytics-Dashboard-PowerBI" class="btn">
+                    📁 View GitHub Repository
+                </a>
+                <a href="https://github.com/Vipul0052/HR-Analytics-Dashboard-PowerBI/blob/main/HR%20Analytics%20Dashboard.pbix" class="btn">
+                    📊 Download Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>⭐ If you found this project helpful, please give it a star on GitHub! ⭐</p>
+            <p style="margin-top: 10px; opacity: 0.8;">Last Updated: August 2025</p>
+        </div>
+    </div>
+</body>
+</html>
